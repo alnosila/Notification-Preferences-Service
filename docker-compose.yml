@@ -1,0 +1,71 @@
+# @author alnosila — https://github.com/alnosila
+# Все переменные — из корневого .env (make decrypt). Compose подставляет ${VAR} из того же файла.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    profiles: [prod]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '${PORT}:3000'
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # Hot reload API (make dev)
+  app-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    profiles: [dev]
+    ports:
+      - '${PORT}:3000'
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - dev_node_modules:/app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: sh -c "npm run db:setup && npm run dev"
+
+  # One-off npm commands: make test, make lint, etc.
+  cli:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    profiles: [cli]
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+      - dev_node_modules:/app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+    entrypoint: ['npm', 'run']
+
+volumes:
+  postgres_data:
+  dev_node_modules:

@@ -1,0 +1,48 @@
+# @author alnosila — https://github.com/alnosila
+
+# Dependencies and build artifacts (rebuilt inside the image)
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+
+# Environment and secrets
+.env
+.env.*
+
+# Version control and CI
+.git/
+.github/
+.gitignore
+.gitattributes
+
+# Tests and dev tooling (not needed in production image)
+tests/
+coverage/
+.nyc_output/
+vitest.config.ts
+vitest.config.ts.timestamp-*
+
+# Documentation and local dev files
+*.md
+Makefile
+docker-compose.yml
+docker-compose.override.yml
+docker-compose.*.local.yml
+
+# Editor / OS noise
+.idea/
+.vscode/
+.cursor/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Logs and temp
+logs/
+*.log
+npm-debug.log*
+.cache/
+.tmp/
+temp/

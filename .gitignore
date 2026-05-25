@@ -1,0 +1,55 @@
+# @author alnosila — https://github.com/alnosila
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Environment and secrets
+.env
+.env.*
+vault
+!.env.enc
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Test and coverage
+coverage/
+.nyc_output/
+vitest.config.ts.timestamp-*
+
+# Caches
+.cache/
+.eslintcache
+*.local
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Docker (local overrides, not base compose)
+docker-compose.override.yml
+docker-compose.*.local.yml
+
+# Misc
+*.pid
+*.seed
+.tmp/
+temp/

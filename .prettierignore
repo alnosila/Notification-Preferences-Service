@@ -1,0 +1,6 @@
+# @author alnosila — https://github.com/alnosila
+
+node_modules/
+dist/
+coverage/
+package-lock.json
